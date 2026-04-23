@@ -29,6 +29,3 @@ The tiles you see "RUNNABLE" vs "MODEL_MISSING" depend on what the device has ba
 
 [`github.com/Jibar-OS/JibarOS`](https://github.com/Jibar-OS/JibarOS) for the capability model and what each tile does.
 
-## Migration status
-
-🚧 Code migration in progress.
