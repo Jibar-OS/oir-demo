@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One capability tile. Rendered 5× in activity_main, one per
+  capability (complete / translate / embed / transcribe / detect).
+  MainActivity inflates this template + binds view tags to capability
+  ids so status / elapsed / preview / backend are updated per-tile.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/tile_bg"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp">
+
+    <!-- Row 1: status badge + capability name + backend chip + cancel -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tile_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_idle"
+            android:textColor="@color/fg"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:background="@drawable/status_badge"
+            android:backgroundTint="@color/status_idle"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp" />
+
+        <TextView
+            android:id="@+id/tile_capability"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:text="text.complete"
+            android:textColor="@color/fg"
+            android:textSize="14sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tile_backend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="llama"
+            android:textColor="@color/backend_llama"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/tile_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="cancel"
+            android:textSize="11sp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:fontFamily="monospace"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <!-- Row 2: elapsed ms + preview (output so far) -->
+    <TextView
+        android:id="@+id/tile_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/fg_dim"
+        android:textSize="12sp"
+        android:fontFamily="monospace"
+        android:minLines="2"
+        android:maxLines="3"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/tile_elapsed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textColor="@color/fg_dim"
+        android:textSize="10sp"
+        android:fontFamily="monospace" />
+</LinearLayout>

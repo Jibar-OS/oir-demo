@@ -1,0 +1,60 @@
+// OirDemo — concurrency + cancellation demo for the OIR runtime.
+//
+// Purpose: a visible showcase of what the runtime does that a chatbot
+// app can't — concurrent requests across capabilities, pool-level
+// priority preemption, and real cancellation. Designed to be recorded
+// as a ~2 min Loom.
+//
+// Targets cuttlefish: no mic, no camera, no speakers. All assets
+// (image, PCM voice sample) live at /product/etc/oir/ and are pushed
+// alongside the model files by the demo-setup script.
+//
+// Build model: android_app with sdk_version system_current because
+// oir_sdk declares itself at that level and we static-link it.
+// Platform-signed + privileged so the `oir.permission.USE_TEXT/AUDIO/
+// VISION` signature permissions grant automatically — on cvd-userdebug
+// you could also `pm grant`, but privileged install is one less
+// manual step when recording.
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_app {
+    name: "OirDemo",
+    // platform_apis (not sdk_version) because we static_libs the
+    // oir_sdk_aosp companion, which is itself a platform_apis module —
+    // it references @hide `android.os.ServiceManager` and the
+    // AIDL-generated `android.oir.IOIRService.Stub`. A system_current
+    // app can't link bytecode that references those symbols; it'd
+    // either fail at soong check or throw hidden-API violations at
+    // runtime. OirDemo is a privileged system app anyway (see
+    // `privileged: true` below); platform_apis matches reality.
+    platform_apis: true,
+
+    srcs: ["src/**/*.kt"],
+    resource_dirs: ["res"],
+    manifest: "AndroidManifest.xml",
+
+    static_libs: [
+        "oir_sdk",
+        // The companion MUST be statically linked so its
+        // `META-INF/services/com.oir.internal.OirBinderAdapterProvider`
+        // file (which names OirBinderAdapterProviderImpl) lands in the
+        // APK. Without it, oir_sdk's ServiceLoader finds no provider
+        // and OirServiceClient.lookupAdapter throws
+        // OirWorkerUnavailableException at first app startup —
+        // Oir.installContext() fires from OirContextProvider.onCreate,
+        // so the process dies before MainActivity even runs.
+        "oir_sdk_aosp",
+        "kotlinx-coroutines-core-jvm",
+        "kotlinx-coroutines-android",
+    ],
+
+    kotlincflags: [
+        "-Xjvm-default=all",
+    ],
+
+    certificate: "platform",
+    privileged: true,
+    // Lands in /system_ext/priv-app/OirDemo/OirDemo.apk.
+}

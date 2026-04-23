@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mission-Control palette. Dark, high-contrast, systems-monitor feel. -->
+    <color name="bg">                #FF0D1117</color>   <!-- near-black bg -->
+    <color name="bg_tile">           #FF161B22</color>
+    <color name="bg_hud">            #FF1C2129</color>
+    <color name="fg">                #FFE6EDF3</color>   <!-- primary text -->
+    <color name="fg_dim">            #FF7D8590</color>   <!-- secondary text -->
+    <color name="accent">            #FF58A6FF</color>   <!-- cyan accent -->
+
+    <!-- Status badge colors. Match wording discipline: these are visible
+         labels, not claims about preemption. -->
+    <color name="status_idle">       #FF484F58</color>   <!-- grey -->
+    <color name="status_queued">     #FF7D8590</color>
+    <color name="status_running">    #FF1F6FEB</color>   <!-- blue -->
+    <color name="status_streaming">  #FF39D353</color>   <!-- green -->
+    <color name="status_done">       #FF3FB950</color>
+    <color name="status_cancelled">  #FFD29922</color>   <!-- amber -->
+    <color name="status_error">      #FFF85149</color>   <!-- red -->
+
+    <!-- Backend labels (llama / whisper / ort / mtmd). -->
+    <color name="backend_llama">     #FFBC8CFF</color>   <!-- purple -->
+    <color name="backend_whisper">   #FF58A6FF</color>
+    <color name="backend_ort">       #FFFF9F5A</color>
+    <color name="backend_mtmd">      #FFE8C07D</color>
+</resources>

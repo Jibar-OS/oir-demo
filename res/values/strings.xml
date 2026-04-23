@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OIR Mission Control</string>
+
+    <!-- Top bar buttons -->
+    <string name="btn_fire_all">Fire All</string>
+    <string name="btn_priority_race">Priority Race</string>
+    <string name="btn_cancel_all">Cancel All</string>
+    <string name="btn_reset">Reset</string>
+
+    <!-- Capability names (shown on tiles) -->
+    <string name="cap_complete">text.complete</string>
+    <string name="cap_translate">text.translate</string>
+    <string name="cap_embed">text.embed</string>
+    <string name="cap_transcribe">audio.transcribe</string>
+    <string name="cap_detect">vision.detect</string>
+
+    <!-- HUD labels -->
+    <string name="hud_queued">queued</string>
+    <string name="hud_running">running</string>
+    <string name="hud_done">done</string>
+    <string name="hud_cancelled">cancelled</string>
+    <string name="hud_errors">errors</string>
+    <string name="hud_event_log">event log</string>
+
+    <!-- Tile statuses (also used in event log) -->
+    <string name="status_idle">IDLE</string>
+    <string name="status_queued">QUEUED</string>
+    <string name="status_running">RUNNING</string>
+    <string name="status_streaming">STREAMING</string>
+    <string name="status_done">DONE</string>
+    <string name="status_cancelled">CANCELLED</string>
+    <string name="status_error">ERROR</string>
+
+    <!--
+      v0.6.9: labels/descriptions for the three OIR signature
+      permissions OirDemo declares. AOSP shows these in the settings
+      "Special app access" screen when users inspect permissions a
+      privileged app holds.
+    -->
+    <string name="perm_label_use_text">use on-device text AI</string>
+    <string name="perm_desc_use_text">Allows the app to submit text
+        generation, translation, embedding, classification, and rerank
+        requests to the on-device AI runtime.</string>
+    <string name="perm_label_use_audio">use on-device audio AI</string>
+    <string name="perm_desc_use_audio">Allows the app to submit audio
+        transcription, synthesis, and voice-activity requests to the
+        on-device AI runtime.</string>
+    <string name="perm_label_use_vision">use on-device vision AI</string>
+    <string name="perm_desc_use_vision">Allows the app to submit image
+        description, detection, OCR, and embedding requests to the
+        on-device AI runtime.</string>
+</resources>

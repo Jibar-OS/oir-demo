@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Main layout — vertical:
+    1. Top bar (4 action buttons)
+    2. Capability tile stack (scrollable)
+    3. Runtime HUD + event log (bottom strip)
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:padding="12dp">
+
+    <!-- Title row -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Action buttons — weighted so 4 narrow screens still fit.
+         Pre-v0.7.1 layout put title+buttons on one horizontal row with
+         a 0dp-weight TextView, which collapsed the title to 0 width and
+         wrapped the text per-character into a 727px-tall column, eating
+         all vertical space and hiding the tile list. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/btn_fire_all"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="36dp"
+            android:text="@string/btn_fire_all"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:minWidth="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp" />
+
+        <Button
+            android:id="@+id/btn_priority_race"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="36dp"
+            android:text="@string/btn_priority_race"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:minWidth="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginStart="4dp" />
+
+        <Button
+            android:id="@+id/btn_cancel_all"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="36dp"
+            android:text="@string/btn_cancel_all"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:minWidth="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginStart="4dp" />
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="36dp"
+            android:text="@string/btn_reset"
+            android:textSize="11sp"
+            android:fontFamily="monospace"
+            android:minWidth="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+
+    <!-- Tile stack -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/tile_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- Runtime HUD: counters strip + Gantt timeline + short event log.
+         Timeline is the primary visual for Loom — viewers see bars
+         overlap (concurrency), audio admit ahead of queued text
+         (priority), and bars truncate on Cancel All. Event log stays
+         as secondary textual trace for screenshots / post-hoc review. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/bg_hud"
+        android:padding="10dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/hud_counters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="queued 0 · running 0 · done 0 · cancelled 0 · errors 0"
+            android:textColor="@color/fg"
+            android:textSize="12sp"
+            android:fontFamily="monospace" />
+
+        <com.oir.demo.TimelineView
+            android:id="@+id/hud_timeline"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginTop="8dp"
+            android:background="#FF0D1117" />
+
+        <TextView
+            android:id="@+id/hud_event_log"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="6dp"
+            android:text=""
+            android:textColor="@color/fg_dim"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:scrollbars="vertical"
+            android:gravity="bottom" />
+    </LinearLayout>
+</LinearLayout>

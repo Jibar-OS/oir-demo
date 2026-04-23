@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Rounded-rect drawable used as the background of each tile's status
+  label. MainActivity tints this via setColorFilter / setBackgroundTintList
+  to reflect the current state without spawning 7 separate drawables.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <solid android:color="@color/status_idle" />
+    <corners android:radius="4dp" />
+</shape>

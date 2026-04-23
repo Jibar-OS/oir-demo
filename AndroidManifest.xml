@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  OirDemo — concurrency + cancellation showcase for the OIR runtime.
+
+  Privileged + platform-signed so signature-level OIR permissions grant
+  automatically on AOSP builds. On an unsigned build (sideloaded via
+  `adb install`), run `pm grant com.oir.demo oir.permission.USE_TEXT`
+  and the two siblings for audio/vision before launching.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.oir.demo">
+
+    <!--
+      v0.6.9: declare the three OIR signature permissions here so
+      PackageManager knows their protection level (signature|privileged)
+      and auto-grants them to platform-signed installs. Without the
+      <permission> declaration, the names existed implicitly from the
+      uses-permission tags below but had no protectionLevel, so
+      `pm grant` was a manual post-boot requirement — which doesn't
+      survive reboot on cvd. Adding the declarations puts the grant
+      on install and persists.
+
+      Platform service (OIRService) enforces these via
+      context.checkPermission at every submit*() binder entry — so the
+      permission string is the authoritative UID gate, not scoped to
+      OirDemo. Declaring them here (instead of via a framework-res
+      patch) is the minimally-invasive landing place; a future
+      platform-standard declaration supersedes with no conflict
+      (PackageManager merges by name, enforces protectionLevel
+      consistency).
+    -->
+    <permission android:name="oir.permission.USE_TEXT"
+        android:protectionLevel="signature|privileged"
+        android:label="@string/perm_label_use_text"
+        android:description="@string/perm_desc_use_text" />
+    <permission android:name="oir.permission.USE_AUDIO"
+        android:protectionLevel="signature|privileged"
+        android:label="@string/perm_label_use_audio"
+        android:description="@string/perm_desc_use_audio" />
+    <permission android:name="oir.permission.USE_VISION"
+        android:protectionLevel="signature|privileged"
+        android:label="@string/perm_label_use_vision"
+        android:description="@string/perm_desc_use_vision" />
+
+    <uses-permission android:name="oir.permission.USE_TEXT"   />
+    <uses-permission android:name="oir.permission.USE_AUDIO"  />
+    <uses-permission android:name="oir.permission.USE_VISION" />
+
+    <application
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Material.NoActionBar"
+        android:hardwareAccelerated="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action   android:name="android.intent.action.MAIN"     />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
