@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">OIR Mission Control</string>
+    <string name="app_name">Open Intelligence Mission Control</string>
 
     <!-- Top bar buttons -->
     <string name="btn_fire_all">Fire All</string>
