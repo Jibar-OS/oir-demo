@@ -15,7 +15,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.oir.Oir
+import com.oir.OpenIntelligence
 import com.oir.errors.OirCancelledException
 import com.oir.models.CompletionOptions
 import com.oir.models.TranslationOptions
@@ -265,7 +265,7 @@ class MainActivity : Activity() {
         h.setStatus(Status.STREAMING)
         timeline.updateBarColor(barId, statusColor(Status.STREAMING))
         val sb = StringBuilder()
-        Oir.text.completeStream(DemoPresets.PROMPT_COMPLETE, options)
+        OpenIntelligence.text.completeStream(DemoPresets.PROMPT_COMPLETE, options)
                 .flowOn(Dispatchers.IO)
                 .onEach { chunk ->
                     sb.append(chunk.text)
@@ -284,7 +284,7 @@ class MainActivity : Activity() {
         h.setStatus(Status.STREAMING)
         timeline.updateBarColor(barId, statusColor(Status.STREAMING))
         val sb = StringBuilder()
-        Oir.text.translateStream(DemoPresets.PROMPT_TRANSLATE, options)
+        OpenIntelligence.text.translateStream(DemoPresets.PROMPT_TRANSLATE, options)
                 .flowOn(Dispatchers.IO)
                 .onEach { chunk ->
                     sb.append(chunk.text)
@@ -296,7 +296,7 @@ class MainActivity : Activity() {
 
     private suspend fun runEmbed(h: TileHolder, t0: Long) {
         val vec: FloatArray = withContext(Dispatchers.IO) {
-            Oir.text.embed(DemoPresets.PROMPT_EMBED)
+            OpenIntelligence.text.embed(DemoPresets.PROMPT_EMBED)
         }
         // ChatGPT review note: don't dump the raw vector — surface
         // dim + L2 norm + a few values. Gives the tile a meaningful
@@ -312,7 +312,7 @@ class MainActivity : Activity() {
         h.setStatus(Status.STREAMING)
         timeline.updateBarColor(barId, statusColor(Status.STREAMING))
         val sb = StringBuilder()
-        Oir.audio.transcribeStream(DemoPresets.ASSET_VOICE_WAV)
+        OpenIntelligence.audio.transcribeStream(DemoPresets.ASSET_VOICE_WAV)
                 .flowOn(Dispatchers.IO)
                 .onEach { chunk ->
                     if (sb.isNotEmpty()) sb.append(' ')
@@ -338,7 +338,7 @@ class MainActivity : Activity() {
             timeline.updateBarColor(reqId, statusColor(Status.RUNNING))
             logEvent("started $reqId")
             withContext(Dispatchers.IO) {
-                Oir.text.complete(
+                OpenIntelligence.text.complete(
                     DemoPresets.PROMPT_COMPLETE,
                     CompletionOptions(
                         maxTokens   = DemoPresets.MAX_TOKENS,
@@ -364,7 +364,7 @@ class MainActivity : Activity() {
     private suspend fun runDetect(h: TileHolder, t0: Long) {
         // Plain suspend — detection is one-shot, not streamed.
         val objects = withContext(Dispatchers.IO) {
-            Oir.vision.detect(DemoPresets.ASSET_IMAGE_BUS)
+            OpenIntelligence.vision.detect(DemoPresets.ASSET_IMAGE_BUS)
         }
         // Format: "N objects · top: bus(0.91), person(0.84), …"
         if (objects.isEmpty()) {
