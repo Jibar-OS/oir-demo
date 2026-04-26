@@ -1,10 +1,10 @@
 # oir-demo — OirDemo Mission Control
 
-Reference app that exercises every OIR capability concurrently. Named "Mission Control" because the UI is a tile-per-capability grid with a Gantt timeline showing overlapping work.
+Reference app that exercises 5 of OIR's 12 capabilities concurrently — text.complete, text.translate, text.embed, audio.transcribe, vision.detect. Named "Mission Control" because the UI is a tile-per-capability grid with a Gantt timeline showing overlapping work.
 
 ## What it demos
 
-- **Fire All** — launches one submit per capability at once. Shows that the platform can actually serve six concurrent loads without serialising them all behind one lock.
+- **Fire All** — launches one submit per capability at once. Shows that the platform can actually serve 5 concurrent submits across 4 distinct loaded models (Qwen shared by complete + translate) without serialising them behind one lock.
 - **Priority Race** — fires N background `text.complete` submits while tapping an `audio.*` tile, to observe cross-priority preemption.
 - **Cancel All** — every in-flight submit cancels cleanly, including ones streaming tokens mid-response.
 
@@ -18,7 +18,7 @@ Wired into the cvd reference build via `PRODUCT_PACKAGES += OirDemo` in [`device
 
 ## Runtime prerequisites
 
-The tiles you see "RUNNABLE" vs "MODEL_MISSING" depend on what the device has baked into `/product/etc/oir/`. The reference Cuttlefish build bakes six runnable capabilities; the rest show clean `MODEL_MISSING` errors until an OEM supplies the model.
+The tiles you see "RUNNABLE" vs "MODEL_MISSING" depend on what's baked into `/product/etc/oir/`. The reference Cuttlefish build bundles 3 models (Qwen + MiniLM + whisper-tiny) covering 4 of the 5 demo tiles end-to-end. vision.detect needs an OEM-supplied detector (RT-DETR Apache 2.0 recommended) — the tile cleanly errors as MODEL_MISSING until that's baked.
 
 ## Source dependencies
 
