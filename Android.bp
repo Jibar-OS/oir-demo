@@ -56,5 +56,6 @@ android_app {
 
     certificate: "platform",
     privileged: true,
+    system_ext_specific: true,
     // Lands in /system_ext/priv-app/OirDemo/OirDemo.apk.
 }
