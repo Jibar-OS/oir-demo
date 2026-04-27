@@ -57,5 +57,18 @@ android_app {
     certificate: "platform",
     privileged: true,
     system_ext_specific: true,
+    required: ["privapp-permissions-com.oir.demo.xml"],
     // Lands in /system_ext/priv-app/OirDemo/OirDemo.apk.
+}
+
+// Privapp permissions allowlist — auto-grants OIR USE_* perms to OirDemo
+// on first install. Without this the dangerous USE_AUDIO / USE_VISION
+// would require a runtime grant prompt at first launch.
+prebuilt_etc {
+    name: "privapp-permissions-com.oir.demo.xml",
+    sub_dir: "permissions",
+    src: "res/etc/permissions/privapp-permissions-com.oir.demo.xml",
+    system_ext_specific: true,
+    filename_from_src: true,
+
 }

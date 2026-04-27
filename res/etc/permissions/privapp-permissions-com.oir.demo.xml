@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+  <!-- Privapp-permissions allowlist for OirDemo (Mission Control reference app).
+       Auto-grants the OIR USE_* permissions on first install — the app is
+       platform-signed and privileged, but USE_AUDIO and USE_VISION are
+       dangerous-level so without this allowlist the user would see a
+       runtime-grant dialog on first launch. -->
+  <privapp-permissions package="com.oir.demo">
+    <permission name="oir.permission.USE_TEXT"/>
+    <permission name="oir.permission.USE_AUDIO"/>
+    <permission name="oir.permission.USE_VISION"/>
+  </privapp-permissions>
+</permissions>
