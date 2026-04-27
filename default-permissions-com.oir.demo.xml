@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Default-permissions for OirDemo: pre-grants the dangerous-level
+     OIR USE_AUDIO and USE_VISION at first boot so the user sees no
+     runtime permission dialog when launching the demo. USE_TEXT is
+     normal-level and is auto-granted by virtue of being declared in
+     the manifest. -->
+<exceptions>
+  <exception package="com.oir.demo">
+    <permission name="oir.permission.USE_AUDIO" fixed="false"/>
+    <permission name="oir.permission.USE_VISION" fixed="false"/>
+  </exception>
+</exceptions>
