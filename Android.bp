@@ -67,7 +67,7 @@ android_app {
 prebuilt_etc {
     name: "privapp-permissions-com.oir.demo.xml",
     sub_dir: "permissions",
-    src: "res/etc/permissions/privapp-permissions-com.oir.demo.xml",
+    src: "privapp-permissions-com.oir.demo.xml",
     system_ext_specific: true,
     filename_from_src: true,
 
