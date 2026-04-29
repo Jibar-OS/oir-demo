@@ -16,6 +16,7 @@
     <color name="status_streaming">  #FF39D353</color>   <!-- green -->
     <color name="status_done">       #FF3FB950</color>
     <color name="status_cancelled">  #FFD29922</color>   <!-- amber -->
+    <color name="status_throttled">  #FFA371F7</color>   <!-- violet — rate-limited, expected pushback, not an error -->
     <color name="status_error">      #FFF85149</color>   <!-- red -->
 
     <!-- Backend labels (llama / whisper / ort / mtmd). -->

@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.oir.OpenIntelligence
 import com.oir.errors.OirCancelledException
+import com.oir.errors.OirThrottledException
 import com.oir.models.CompletionOptions
 import com.oir.models.TranslationOptions
 import kotlinx.coroutines.CoroutineScope
@@ -70,6 +71,7 @@ class MainActivity : Activity() {
     private var cRunning = 0
     private var cDone = 0
     private var cCancelled = 0
+    private var cThrottled = 0
     private var cErrors = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,7 +142,7 @@ class MainActivity : Activity() {
     private fun reset() {
         for (job in jobs.values) job.cancel()
         jobs.clear()
-        cQueued = 0; cRunning = 0; cDone = 0; cCancelled = 0; cErrors = 0
+        cQueued = 0; cRunning = 0; cDone = 0; cCancelled = 0; cThrottled = 0; cErrors = 0
         renderCounters()
         for ((_, holder) in tiles) holder.setStatus(Status.IDLE, preview = "", elapsed = "")
         hudEventLog.text = ""
@@ -209,6 +211,17 @@ class MainActivity : Activity() {
             holder.setStatus(Status.CANCELLED, elapsed = "cancelled at t+${System.currentTimeMillis() - t0} ms")
             timeline.endBar(barId, statusColor(Status.CANCELLED))
             logEvent("cancelled ${cap.label}")
+        } catch (e: OirThrottledException) {
+            // Per-UID rate limiter pushed back. Expected under burst load
+            // (e.g. Priority Race fires PRIORITY_RACE_TEXT_COUNT submits
+            // in the same instant). Surface as THROTTLED, not ERROR.
+            cRunning--; cThrottled++; renderCounters()
+            val ms = System.currentTimeMillis() - t0
+            holder.setStatus(Status.THROTTLED,
+                    preview = "rate-limit hit; retry after ${e.retryAfterMs} ms",
+                    elapsed = "throttled at t+${ms} ms")
+            timeline.endBar(barId, statusColor(Status.THROTTLED))
+            logEvent("throttled ${cap.label} · retry after ${e.retryAfterMs} ms")
         } catch (t: Throwable) {
             cRunning--; cErrors++; renderCounters()
             val ms = System.currentTimeMillis() - t0
@@ -353,6 +366,11 @@ class MainActivity : Activity() {
             cRunning--; cCancelled++; renderCounters()
             timeline.endBar(reqId, statusColor(Status.CANCELLED))
             logEvent("cancelled $reqId")
+        } catch (e: OirThrottledException) {
+            // Expected under Priority Race burst — see runCapability.
+            cRunning--; cThrottled++; renderCounters()
+            timeline.endBar(reqId, statusColor(Status.THROTTLED))
+            logEvent("throttled $reqId · retry after ${e.retryAfterMs} ms")
         } catch (t: Throwable) {
             cRunning--; cErrors++; renderCounters()
             timeline.endBar(reqId, statusColor(Status.ERROR))
@@ -403,7 +421,8 @@ class MainActivity : Activity() {
 
     private fun renderCounters() {
         hudCounters.text =
-            "queued $cQueued · running $cRunning · done $cDone · cancelled $cCancelled · errors $cErrors"
+            "queued $cQueued · running $cRunning · done $cDone · " +
+            "cancelled $cCancelled · throttled $cThrottled · errors $cErrors"
     }
 
     private fun logEvent(line: String) {
@@ -447,6 +466,10 @@ class MainActivity : Activity() {
         STREAMING( "STREAMING", R.color.status_streaming),
         DONE(      "DONE",      R.color.status_done),
         CANCELLED( "CANCELLED", R.color.status_cancelled),
+        // v0.7: rate-limit pushback is expected behavior under burst load
+        // (see Priority Race), not a runtime error. Distinct color +
+        // dedicated counter so the demo doesn't paint THROTTLED tiles red.
+        THROTTLED( "THROTTLED", R.color.status_throttled),
         ERROR(     "ERROR",     R.color.status_error),
     }
 
